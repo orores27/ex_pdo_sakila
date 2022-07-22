@@ -2,9 +2,9 @@
 
 try {
     $db = new PDO(
-        'mysql:host=localhost;dbname=pays;charset=utf8',
-        'userPays',
-        '@e/O6Yli.iV5EArw'
+        'mysql:host=localhost;dbname=id19307893_paysdumonde;charset=utf8',
+        'id19307893_sabah',
+        'DX>/_d}+6^L9D7AH'
     );
     // echo 'Vous êtes connecté';
 
@@ -22,7 +22,7 @@ if  (isset($_GET["region"]) && $_GET["region"]) {
     $continentAllStatement->execute();
     $idContinentRegion = $continentAllStatement->fetch();  
 
-// SI LE CONTINENT DE LA REGION DANS L URL EST LE MEME QUE LE CONTINENT SELECTIONNE DANS L URL  ALORS CE QUI A ETE CHANG2 EST LA REGION
+// SI LE CONTINENT DE LA REGION DANS L URL EST LE MEME QUE LE CONTINENT SELECTIONNE DANS L URL  ALORS CE QUI A ETE CHANGE EST LA REGION
     if ($idContinentRegion[0] == $_GET['continent']) {
         # code...
         if ($_GET["continent"] == 0 ) {
@@ -150,16 +150,19 @@ $resultsCalculs = $mondeStatement->fetchAll();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/darkly/bootstrap.min.css">
     <title>Document</title>
 </head>
 
 <body>
-    <label for="pays-select">Par continent</label>
+<h1 class="text-center">Pays du monde</h1>
+    <label for="pays-select" ></label>
 
     <form method="GET">
         <!-- name="continent" est appelé plus haut dans la condition => (isset($_GET["continent"]) && $_GET["continent"]) -->
-        <select name="continent" id="pays-select" onchange="this.form.submit()">
+        <select class="m-4 p-2" name="continent" id="pays-select" onchange="this.form.submit()">
         <!-- on attribut une valeur de ZERO à monde puisque les id continent commencent par 1 -->
             <option value="0">Monde</option>
             <?php foreach ($resultsContinents as $result) : ?>
@@ -171,7 +174,7 @@ $resultsCalculs = $mondeStatement->fetchAll();
            
             
            
-        <select name="region" id="region-select" onchange="this.form.submit()">
+        <select class="m-4 p-2"  name="region" id="region-select" onchange="this.form.submit()">
             <option value="0">Région</option>
             <?php foreach ($resultsRegion as $resultRegion) : ?>
                 <option value="<?= $resultRegion['id_region'] ?>" <?= isset($_GET["region"]) && $_GET["region"] === $resultRegion["id_region"] ? "selected" : "" ?>><?= $resultRegion['libelle_region'] ?></option>
@@ -182,7 +185,7 @@ $resultsCalculs = $mondeStatement->fetchAll();
 
     <table class="table">
         <thead>
-            <tr>
+            <tr class="bg-primary">
                 <th scope="col">Pays</th>
                 <th scope="col">Population totale (en milliers)</th>
                 <th scope="col">Taux de natalité</th>
@@ -198,7 +201,7 @@ $resultsCalculs = $mondeStatement->fetchAll();
         <tbody>
             <!-- calcul pour chaque continent  -->
             <?php foreach ($resultFinal as $result) : ?>
-                <tr>
+                <tr >
                     <td><?= $result['libelle'] ?></td>
                     <td><?= $result['population'] ?></td>
                     <td><?= round($result['natalite'], 1) ?></td>
@@ -214,7 +217,7 @@ $resultsCalculs = $mondeStatement->fetchAll();
         </tbody>
         
         <tfoot>
-            <tr>
+            <tr class="bg-primary">
 <!-- Récupérer la valeur de la dernière ligne -->
                 <?php foreach ($resultsCalculs as $result) : ?>
                     <th scope="row"><?= $result['libelle'] ?></th>
