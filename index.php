@@ -2,9 +2,9 @@
 
 try {
     $db = new PDO(
-        'mysql:host=localhost;dbname=id19307893_paysdumonde;charset=utf8',
-        'id19307893_sabah',
-        'DX>/_d}+6^L9D7AH'
+        'mysql:host=localhost;dbname=pays;charset=utf8',
+        'userPays',
+        '@e/O6Yli.iV5EArw'
     );
     // echo 'Vous êtes connecté';
 
@@ -35,7 +35,7 @@ if  (isset($_GET["region"]) && $_GET["region"]) {
         
     } 
     
-    // SINON CA VEUT DIRE QUE LE CONTIENNT A ETE CHANGE PARCE QUE LA REGION NE CORRESPOND PLUS AU CONTINENT DONC ON FAIT LA REQUETE PAR CONTINENT
+    // SINON CA VEUT DIRE QUE LE CONTINENT A ETE CHANGE PARCE QUE LA REGION NE CORRESPOND PLUS AU CONTINENT DONC ON FAIT LA REQUETE PAR CONTINENT
     else {
         if ($_GET["continent"] == 0 ) {
             $sqlQueryContinent = 'SELECT c.id_continent AS "id",c.libelle_continent AS "libelle", SUM(p.population_pays)AS population,AVG(p.taux_natalite_pays) AS natalite,AVG(p.taux_mortalite_pays) AS mortalite,AVG(p.esperance_vie_pays) AS esperance,AVG(p.taux_mortalite_infantile_pays) AS mortinfant,AVG(p.nombre_enfants_par_femme_pays) AS nbrenfant,AVG(p.taux_croissance_pays) AS croissance,SUM(p.population_plus_65_pays) AS pop65 FROM t_continents c INNER JOIN t_pays p ON c.`id_continent`=p.continent_id GROUP BY libelle';
@@ -120,12 +120,16 @@ if (isset($_GET["region"]) && $_GET["region"]) {
  // SINON CA VEUT DIRE QUE LE CONTIENNT A ETE CHANGE PARCE QUE LA REGION NE CORRESPOND PLUS AU CONTINENT DONC ON FAIT LA REQUETE PAR CONTINENT
 
     else{
+
         $sqlQueryCalcul = 'SELECT libelle_continent AS "libelle", SUM(p.population_pays)AS population,AVG(p.taux_natalite_pays) AS natalite,AVG(p.taux_mortalite_pays) AS mortalite,AVG(p.esperance_vie_pays) AS esperance,AVG(p.taux_mortalite_infantile_pays) AS mortinfant,AVG(p.nombre_enfants_par_femme_pays) AS nbrenfant,AVG(p.taux_croissance_pays) AS croissance,SUM(p.population_plus_65_pays) AS pop65 FROM t_pays p INNER JOIN t_continents ON (p.continent_id=t_continents.id_continent) WHERE id_continent=' . $_GET["continent"];
-    }
+            if ($_GET["continent"] == 0 ){
+                $sqlQueryCalcul = 'SELECT \'MONDE\' AS "libelle", SUM(p.population_pays) AS population,AVG(p.taux_natalite_pays) AS natalite,AVG(p.taux_mortalite_pays) AS mortalite,AVG(p.esperance_vie_pays) AS esperance,AVG(p.taux_mortalite_infantile_pays) AS mortinfant,AVG(p.nombre_enfants_par_femme_pays) AS nbrenfant,AVG(p.taux_croissance_pays) AS croissance,SUM(p.population_plus_65_pays) AS pop65  FROM t_pays p';
+            }
+        }}
 
 
     
-}
+
 //  AFFICHER LE TOTAL DU MONDE
 elseif (isset($_GET["continent"]) && $_GET["continent"]) {
     $sqlQueryCalcul = 'SELECT libelle_continent AS "libelle", SUM(p.population_pays)AS population,AVG(p.taux_natalite_pays) AS natalite,AVG(p.taux_mortalite_pays) AS mortalite,AVG(p.esperance_vie_pays) AS esperance,AVG(p.taux_mortalite_infantile_pays) AS mortinfant,AVG(p.nombre_enfants_par_femme_pays) AS nbrenfant,AVG(p.taux_croissance_pays) AS croissance,SUM(p.population_plus_65_pays) AS pop65 FROM t_pays p INNER JOIN t_continents ON (p.continent_id=t_continents.id_continent) WHERE id_continent=' . $_GET["continent"];
